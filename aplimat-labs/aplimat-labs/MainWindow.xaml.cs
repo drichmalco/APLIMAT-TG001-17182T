@@ -28,8 +28,8 @@ namespace aplimat_labs
         private const float GRAPH_LIMIT = 15;
         private const int TOTAL_CIRCLE_ANGLE = 360;
 
-        private Vector3 a = new Vector3(15, 15 ,0);
-        private Vector3 b = new Vector3(-2, 10, 0);
+        //private Vector3 a = new Vector3(15, 15 ,0);
+        //private Vector3 b = new Vector3(-2, 10, 0);
 
         private const int HEADS = -20;
         private const int TAILS = 20;
@@ -40,6 +40,9 @@ namespace aplimat_labs
         {
             InitializeComponent();
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
+
+   
+            Console.WriteLine(myVector.GetMagnitude());
 
             //Vector3 c = a + b;
             //Console.WriteLine("Vector c values: x: " + c.x + " y: " + c.y + " z: " + c.z);
@@ -56,6 +59,18 @@ namespace aplimat_labs
         private CubeMesh myCube = new CubeMesh();
         private Vector3 velocity = new Vector3(1, 1, 0);
 
+        private Vector3 myVector = new Vector3();
+
+        private Vector3 a = new Vector3(3, 5, 0);
+        private Vector3 b = new Vector3(-7, -6, 0);
+
+        private Vector3 c = new Vector3(0, 0, 0);
+        private Vector3 d = new Vector3(5, 7, 0);
+
+
+        private Vector3 mouseInput = new Vector3();
+        private float speed = 2.0f;
+
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
@@ -65,27 +80,87 @@ namespace aplimat_labs
             gl.LoadIdentity();
             gl.Translate(0.0f, 0.0f, -100.0f);
 
-            myCube.Draw(gl);
-            myCube.Position += velocity;
+            //myCube.Draw(gl);
+            //myCube.Position += velocity * speed;
+
+
+            ///////////// SeatWork 2 
+            myVector = c - d;
+
+            gl.Color(1.0f, 1.0f, 1.0f);
+            gl.LineWidth(5f);
+            gl.Begin(OpenGL.GL_LINE_STRIP);
+            gl.Vertex(c.x, c.y);
+            gl.Vertex(d.x, d.y);
+            gl.End();
+
+            gl.Color(0.0f, 1.0f, 0.0f);
+            gl.Begin(OpenGL.GL_LINE_STRIP);
+            gl.Vertex(c.x,c.y);
+            gl.Vertex(d.x, d.y);
+            gl.End();
+
+
+            if (Keyboard.IsKeyDown(Key.W))
+            {
+                d.x += 1;
+            }
+            if (Keyboard.IsKeyDown(Key.S))
+            {
+                d.x -= 1;
+            }
+            if (Keyboard.IsKeyDown(Key.D))
+            {
+                d.y += 1;
+            }
+            if (Keyboard.IsKeyDown(Key.A))
+            {
+                d.y -= 1;
+            }
             
-            if(myCube.Position.x >= 30.0f)
-            {
-                velocity.x = -1;
+      
+            
 
-            }
-            if (myCube.Position.x <= -30.0f)
-            {
-                velocity.x = 1;
+       
 
-            }
-            if (myCube.Position.y <= -25.0f)
-            {
-                velocity.y = 1;
-            }
-            if (myCube.Position.y >= 25.0f)
-            {
-                velocity.y = -1;
-            }
+
+            //gl.Color(0.0f, 1.0f, 1.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(a.x, a.y);
+            //gl.Vertex(b.x, b.y);
+            //gl.End();
+
+            //gl.Color(0.0f, 0.0f, 1.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(b.x, b.y);
+            //gl.Vertex(0, 0);
+            //gl.End();
+
+
+            gl.DrawText(0, 0, 1, 1, 1, "Arial",  15, "myVector magnitude is :" + myVector.GetMagnitude());
+
+            ////////////////SeatWork start = bounce ball
+            ////if(myCube.Position.x >= 30.0f)
+            ////{
+            ////    velocity.x = -1;
+
+            ////}
+            ////else if (myCube.Position.x <= -30.0f)
+            ////{
+            ////    velocity.x = 1;
+
+            ////}
+            ////if (myCube.Position.y <= -25.0f)
+            ////{
+            ////    velocity.y = 1;
+            ////}
+            ////else if (myCube.Position.y >= 25.0f)
+            ////{
+            ////    velocity.y = -1;
+            ////}
+            ////////////// Seatwork End 
+
+
             //myCube.Position = new Vector3(Gaussian.Generate(0,15), rng.GenerateInt(), 0);
             //myCubes.Add(myCube);
             //foreach (var cube in myCubes)

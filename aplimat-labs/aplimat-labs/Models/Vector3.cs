@@ -39,5 +39,17 @@ namespace aplimat_labs.NewFolder1
         {
             return new Vector3(left.x - right.x, left.y - right.y, left.z - right.z);
         }
+        public static Vector3 operator *(Vector3 left, float scaler)
+        {
+            return new Vector3(left.x * scaler, left.y * scaler, left.z * scaler);
+        }
+        public static Vector3 operator /(Vector3 left, float scaler)
+        {
+            return new Vector3(left.x / scaler, left.y / scaler, left.z / scaler);
+        }
+        public float GetMagnitude()
+        {
+            return (float)Math.Sqrt((x * x) + (y * y) + (z * z));
+        }
     }
 }
