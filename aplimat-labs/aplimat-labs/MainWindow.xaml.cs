@@ -50,6 +50,17 @@ namespace aplimat_labs
             //Vector3 d = a - b;
             //Console.WriteLine("Vector c values: x: " + d.x + " y: " + d.y + " z: " + d.z);
         }
+
+
+
+        private CubeMesh mover = new CubeMesh(-12, 0, 0);
+        private Vector3 acceleration = new Vector3(0.01f, 0, 0);
+        private Vector3 decceleration = new Vector3(-0.4f, 0, 0);
+        private Vector3 Stopper = new Vector3(0.0f, 0.0f, 0.0f);
+        private bool Stop = false;
+
+
+
         //private CubeMesh myCube = new CubeMesh(2,1,0);
         private Randomizer rng = new Randomizer(-20, 20);
         private Randomizer rngColor = new Randomizer(0, 1);
@@ -61,6 +72,10 @@ namespace aplimat_labs
 
         private Vector3 myVector = new Vector3();
 
+
+        /// <summary>
+        /// //////////////////// LIGHT SABER DRAW
+        /// </summary>
         private Vector3 a = new Vector3(3, 5, 0);
         private Vector3 b = new Vector3(-7, -6, 0);
 
@@ -71,6 +86,14 @@ namespace aplimat_labs
         private Vector3 mouseInput = new Vector3();
         private float speed = 2.0f;
 
+        /// <summary>
+        /// ////////////// LIGHTSABER MOUSE MOVEMENT
+        /// </summary>
+        private Vector3 mousePos = new Vector3();
+
+
+
+
         private void OpenGLControl_OpenGLDraw(object sender, SharpGL.SceneGraph.OpenGLEventArgs args)
         {
             OpenGL gl = args.OpenGL;
@@ -80,6 +103,61 @@ namespace aplimat_labs
             gl.LoadIdentity();
             gl.Translate(0.0f, 0.0f, -100.0f);
 
+
+            mover.Draw(gl);
+            //mover.Velocity += acceleration;
+            mover.Velocity.Clamp(2.0f);
+
+           
+                if (Stop == false)
+                {
+                    mover.Velocity += acceleration;
+                }
+                if (mover.Position.x >= 25.0f && Stop == false)
+                {
+                        mover.Velocity += decceleration;
+                }
+
+          
+            //else mover.Velocity = Stopper;
+
+            //else if (mover.Position.x >= 25.0f)
+            //{
+            //    mover.Velocity += decceleration;
+            //    Stop = true;
+            //}
+            //else  if (mover.Velocity == Stopper)
+            //{
+            //    mover.Velocity = Stopper;
+            //}
+            gl.DrawText(0, 0, 1, 1, 1, "Arial", 15, "Mover MPH: " + mover.Velocity.x);
+
+            /////////////////////////////////////////Mouse Movement
+
+
+            //mousePos.Normalize();
+            //mousePos *= 10;
+
+
+            //gl.Color(0.0f, 0.0f, 1.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(0, 0);
+            //gl.Vertex(mousePos.x, mousePos.y);
+            //gl.End();
+
+
+            //gl.Color(1.0f, 0.0f, 0.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(20, 0);
+            //gl.Vertex(mousePos.x, mousePos.y);
+            //gl.End();
+
+            //gl.Color(1.0f, 1.0f, 0.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(20, 30);
+            //gl.Vertex(mousePos.x, mousePos.y);
+            //gl.End();
+
             //myCube.Draw(gl);
             //myCube.Position += velocity * speed;
 
@@ -87,38 +165,36 @@ namespace aplimat_labs
             ///////////// SeatWork 2 
             myVector = c - d;
 
-            gl.Color(1.0f, 1.0f, 1.0f);
-            gl.LineWidth(5f);
-            gl.Begin(OpenGL.GL_LINE_STRIP);
-            gl.Vertex(c.x, c.y);
-            gl.Vertex(d.x, d.y);
-            gl.End();
+            //gl.Color(1.0f, 1.0f, 1.0f);
+            //gl.LineWidth(5f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(c.x, c.y);
+            //gl.Vertex(d.x, d.y);
+            //gl.End();
 
-            gl.Color(0.0f, 1.0f, 0.0f);
-            gl.Begin(OpenGL.GL_LINE_STRIP);
-            gl.Vertex(c.x,c.y);
-            gl.Vertex(d.x, d.y);
-            gl.End();
+            //gl.Color(0.0f, 1.0f, 0.0f);
+            //gl.Begin(OpenGL.GL_LINE_STRIP);
+            //gl.Vertex(c.x,c.y);
+            //gl.Vertex(d.x, d.y);
+            //gl.End();
 
-
-            if (Keyboard.IsKeyDown(Key.W))
-            {
-                d.x += 1;
-            }
-            if (Keyboard.IsKeyDown(Key.S))
-            {
-                d.x -= 1;
-            }
-            if (Keyboard.IsKeyDown(Key.D))
-            {
-                d.y += 1;
-            }
-            if (Keyboard.IsKeyDown(Key.A))
-            {
-                d.y -= 1;
-            }
-            
-      
+            //if (Keyboard.IsKeyDown(Key.W))
+            //{
+            //    d.x += 1;
+            //}
+            //if (Keyboard.IsKeyDown(Key.S))
+            //{
+            //    d.x -= 1;
+            //}
+            //if (Keyboard.IsKeyDown(Key.D))
+            //{
+            //    d.y += 1;
+            //}
+            //if (Keyboard.IsKeyDown(Key.A))
+            //{
+            //    d.y -= 1;
+            //}
+   
             
 
        
@@ -137,7 +213,7 @@ namespace aplimat_labs
             //gl.End();
 
 
-            gl.DrawText(0, 0, 1, 1, 1, "Arial",  15, "myVector magnitude is :" + myVector.GetMagnitude());
+            //gl.DrawText(0, 0, 1, 1, 1, "Arial",  15, "myVector magnitude is :" + myVector.GetMagnitude());
 
             ////////////////SeatWork start = bounce ball
             ////if(myCube.Position.x >= 30.0f)
@@ -361,5 +437,19 @@ namespace aplimat_labs
             gl.DrawText(x, y, 1, 1, 1, "Arial", 12, text);
         }
         #endregion
+
+        private void OpenGLControl_MouseMove(object sender, MouseEventArgs e)
+        {
+            mousePos =  new Vector3 (e.GetPosition(this).X, e.GetPosition(this).Y, 0);
+
+            mousePos.x = (float)mousePos.x - (float)Width / 2.0f;
+            mousePos.y = (float)mousePos.y - (float)Height / 2.0f;
+
+            mousePos.y = -mousePos.y;
+
+            Console.WriteLine("Mouse X: " + mousePos.x + " Mouse Y : " + mousePos.y);
+
+            //Console.WriteLine(mousepos.X + " " + mousepos.Y);
+        }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace aplimat_labs.Models
 {
-    public class CubeMesh
+    public class CubeMesh : Movable
     {
         public Vector3 Position;
 
@@ -58,7 +58,11 @@ namespace aplimat_labs.Models
             gl.Vertex(this.Position.x + 0.5f, this.Position.y - 0.5f, this.Position.z + 0.5f);
             gl.End();
 
-
+            ApplyVelocity();
+        }
+        private void ApplyVelocity()
+        {
+            this.Position += Velocity;
         }
     }
 }
