@@ -50,8 +50,26 @@ namespace aplimat_labs
             //Vector3 d = a - b;
             //Console.WriteLine("Vector c values: x: " + d.x + " y: " + d.y + " z: " + d.z);
         }
+        private CubeMesh lightcube = new CubeMesh()
+        {
+            Position = new Vector3(-25, 0, 0),
+            Mass = 1
+        };
+        private CubeMesh heavycube = new CubeMesh()
+        {
+            Position = new Vector3(-25, -10, 0),
+            Mass = 6
+        };
 
+        private CubeMesh fallingcube = new CubeMesh()
+        {
+            Position = new Vector3(-45, 10, 0),
+            Mass = 3
+        };
 
+        private Vector3 wind = new Vector3(0.08f, 0, 0);
+        private Vector3 gravity = new Vector3(0f, -0.5f, 0);
+        private Vector3 thrust = new Vector3(0, 0.02f, 0);
 
         private CubeMesh mover = new CubeMesh(-12, 0, 0);
         private Vector3 acceleration = new Vector3(0.01f, 0, 0);
@@ -104,21 +122,81 @@ namespace aplimat_labs
             gl.Translate(0.0f, 0.0f, -100.0f);
 
 
-            mover.Draw(gl);
-            //mover.Velocity += acceleration;
-            mover.Velocity.Clamp(2.0f);
+            gl.Color(1.0f, 0.0f, 0.0f);
+            lightcube.Draw(gl);
+            if (lightcube.Position.y <= -20f )
+            {
+                lightcube.Position.y = -20f;
+                lightcube.Velocity -= gravity * 3;
+                lightcube.ApplyForce(wind);
+            }
+            else lightcube.ApplyForce(gravity);
 
+            if (lightcube.Position.x >= 10)
+            {
+                lightcube.Position.x = 10 ;
+                lightcube.Velocity -= wind * 15;
+      
+            }
+            else lightcube.ApplyForce(wind);
+
+
+
+
+            gl.Color(0.0f, 0.0f, 1.0f);
+            heavycube.Draw(gl);
+
+            if (heavycube.Position.y <= -20f)
+            {
+                heavycube.Position.y = -20;
+                heavycube.Velocity -= gravity * 3;
+                heavycube.ApplyForce(wind);
+            }
+            else heavycube.ApplyForce(gravity);
+
+            if (heavycube.Position.x >= 10)
+            {
+                heavycube.Position.x = 10;
+                heavycube.Velocity -= wind * 15;
+            }
+            else heavycube.ApplyForce(wind);
+
+
+            gl.Color(0.0f, 1.0f, 0.0f);
+            fallingcube.Draw(gl);
+            
+
+            if (fallingcube.Position.y <= -20f)
+            {
+                fallingcube.Position.y = -20;
+                fallingcube.Velocity -= gravity * 3;
+                fallingcube.ApplyForce(wind);
+            } else fallingcube.ApplyForce(gravity);
+
+            if(fallingcube.Position.x >= 10)
+            {
+                fallingcube.Position.x = 10;
            
-                if (Stop == false)
-                {
-                    mover.Velocity += acceleration;
-                }
-                if (mover.Position.x >= 25.0f && Stop == false)
-                {
-                        mover.Velocity += decceleration;
-                }
+                fallingcube.Velocity -= wind * 14;
+            } else fallingcube.ApplyForce(wind);
 
-          
+
+            //////////////////////////////////// QUIZ 2
+            //mover.Draw(gl);
+            ////mover.Velocity += acceleration;
+            //mover.Velocity.Clamp(2.0f);
+
+
+            //    if (Stop == false)
+            //    {
+            //        mover.Velocity += acceleration;
+            //    }
+            //    if (mover.Position.x >= 25.0f && Stop == false)
+            //    {
+            //            mover.Velocity += decceleration;
+            //    }
+
+
             //else mover.Velocity = Stopper;
 
             //else if (mover.Position.x >= 25.0f)
@@ -130,7 +208,7 @@ namespace aplimat_labs
             //{
             //    mover.Velocity = Stopper;
             //}
-            gl.DrawText(0, 0, 1, 1, 1, "Arial", 15, "Mover MPH: " + mover.Velocity.x);
+            gl.DrawText(0, 0, 1, 1, 1, "Arial", 15, "Mover MPH: " + fallingcube.Velocity.x);
 
             /////////////////////////////////////////Mouse Movement
 
